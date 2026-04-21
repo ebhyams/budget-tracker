@@ -21,6 +21,7 @@
       --danger-bg: #fef2f2;
       --success: #16a34a;
       --success-bg: #f0fdf4;
+      --income: #15803d;
       --r: 8px;
       --r-sm: 5px;
       --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
@@ -36,7 +37,15 @@
 
     .app{max-width:1100px;margin:0 auto;padding:24px;display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
     .sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:72px}
-    .main{display:flex;flex-direction:column;gap:16px}
+    .main{display:flex;flex-direction:column;gap:0}
+
+    /* Tabs */
+    .tab-bar{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:4px;box-shadow:var(--shadow);margin-bottom:16px}
+    .tab-btn{flex:1;padding:7px 12px;border-radius:6px;border:none;background:transparent;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all 0.15s;font-family:inherit}
+    .tab-btn:hover{color:var(--text);background:var(--bg)}
+    .tab-btn.active{background:var(--accent);color:#fff}
+    .tab-pane{display:none;flex-direction:column;gap:16px}
+    .tab-pane.active{display:flex}
 
     .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
     .card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -67,6 +76,7 @@
     input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
+    /* Sidebar */
     .month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
     .month-label{font-weight:700;font-size:15px;letter-spacing:-0.01em}
     .total-block{margin-bottom:4px}
@@ -74,7 +84,13 @@
     .total-val{font-size:28px;font-weight:800;letter-spacing:-0.03em;line-height:1}
     .week-val{font-size:13px;color:var(--text-muted);margin-top:4px}
     .divider{height:1px;background:var(--border);margin:14px 0}
+    .aside-stat{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0}
+    .aside-stat-label{font-size:12px;color:var(--text-muted)}
+    .aside-stat-val{font-size:13px;font-weight:600}
+    .aside-stat-val.income{color:var(--income)}
+    .aside-stat-val.negative{color:var(--danger)}
 
+    /* Category chart */
     .cat-row{margin-bottom:11px}
     .cat-row:last-child{margin-bottom:0}
     .cat-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
@@ -85,6 +101,7 @@
     .bar-track{height:4px;background:var(--border);border-radius:3px;overflow:hidden}
     .bar-fill{height:100%;border-radius:3px;transition:width 0.4s ease}
 
+    /* Expense list */
     .expense-item{display:flex;align-items:center;gap:12px;padding:11px 20px;border-bottom:1px solid var(--border);transition:background 0.1s}
     .expense-item:last-child{border-bottom:none}
     .expense-item:hover{background:var(--surface-hover)}
@@ -98,16 +115,17 @@
     .exp-date{font-size:12px;color:var(--text-subtle)}
     .exp-actions{display:flex;gap:2px;opacity:0;transition:opacity 0.12s;flex-shrink:0}
     .expense-item:hover .exp-actions{opacity:1}
-
     .edit-grid{display:grid;grid-template-columns:110px 1fr 130px;gap:8px;margin-bottom:8px}
     .edit-actions{display:flex;gap:6px;justify-content:flex-end;padding-top:4px}
 
+    /* Parse preview */
     .parse-preview{margin-top:14px;padding:14px;background:var(--success-bg);border:1px solid #bbf7d0;border-radius:var(--r-sm);display:none}
     .parse-preview.visible{display:block}
     .parse-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--success);margin-bottom:10px}
     .parse-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
     .parse-field label{color:var(--text-subtle)}
 
+    /* Expense filters */
     .search-wrap{padding:10px 20px;border-bottom:1px solid var(--border)}
     .filter-row{display:flex;flex-wrap:wrap;gap:6px;padding:10px 20px;border-bottom:1px solid var(--border)}
     .chip{padding:3px 10px;border-radius:100px;border:1px solid var(--border-strong);background:var(--surface);font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all 0.12s;font-family:inherit}
@@ -116,23 +134,46 @@
     .list-header-row{display:flex;align-items:center;justify-content:space-between}
     .list-count{font-size:12px;color:var(--text-subtle);font-weight:400}
 
+    /* Collapsible */
     .collapsible-header{cursor:pointer;user-select:none}
     .chevron{transition:transform 0.2s}
     .chevron.up{transform:rotate(180deg)}
     .collapsible-body{display:none}
     .collapsible-body.open{display:block}
 
-    .empty{padding:32px 20px;text-align:center;color:var(--text-subtle);font-size:13px}
+    /* Summary table */
+    .sum-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+    .sum-range{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .sum-range label{white-space:nowrap}
+    .sum-range select{width:auto;min-width:130px}
+    .sum-table-wrap{overflow-x:auto}
+    .sum-table{width:100%;border-collapse:collapse;font-size:13px}
+    .sum-table th{padding:8px 16px;text-align:right;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;border-bottom:2px solid var(--border);white-space:nowrap}
+    .sum-table th:first-child{text-align:left}
+    .sum-table td{padding:7px 16px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
+    .sum-table td:first-child{text-align:left}
+    .sum-table tr:last-child td{border-bottom:none}
+    .sum-table .row-section td{font-weight:700;padding-top:14px;border-bottom:1px solid var(--border-strong)}
+    .sum-table .row-section td:first-child{color:var(--text)}
+    .sum-table .row-sub td{font-size:12px;color:var(--text-muted)}
+    .sum-table .row-sub td:first-child{padding-left:32px}
+    .sum-table .row-total td{font-weight:800;font-size:14px;background:var(--bg);border-top:2px solid var(--border-strong)}
+    .sum-table .row-spacer td{padding:4px;border-bottom:none}
+    .sum-table .row-savings td{color:var(--text-muted)}
+    .val-neg{color:var(--income)}
+    .val-pos{color:var(--text)}
+    .val-tax-pos{color:var(--danger)}
+    .sum-empty{padding:32px 20px;text-align:center;color:var(--text-subtle);font-size:13px}
 
+    /* Misc */
+    .empty{padding:32px 20px;text-align:center;color:var(--text-subtle);font-size:13px}
     .toast-wrap{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:1000}
     .toast{background:#1a1a18;color:#fff;padding:9px 15px;border-radius:var(--r);font-size:13px;font-weight:500;box-shadow:var(--shadow-md);animation:slideUp 0.2s ease;max-width:300px}
     .toast.ok{background:#14532d}
     .toast.err{background:#7f1d1d}
     @keyframes slideUp{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
-
     .custom-cat-row{display:flex;gap:6px;margin-top:8px;display:none}
     .custom-cat-row.visible{display:flex}
-
     @keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
     .fade-in{animation:fadeIn 0.18s ease}
 
@@ -169,6 +210,7 @@
       .parse-grid{grid-template-columns:1fr}
       .btn-label{display:none}
       .edit-grid{grid-template-columns:1fr}
+      .sum-table th,.sum-table td{padding:6px 10px}
     }
   </style>
 </head>
@@ -212,160 +254,176 @@
         </div>
         <div class="divider"></div>
         <div id="catChart"></div>
+        <div id="asideExtras"></div>
       </div>
     </div>
   </aside>
 
   <main class="main">
-
-    <!-- Add Expense -->
-    <div class="card">
-      <div class="card-header collapsible-header" onclick="toggleSection('addBody','addChev')">
-        <span class="card-title">Add Expense</span>
-        <svg class="chevron up" id="addChev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="collapsible-body open" id="addBody">
-        <div class="card-body">
-          <div class="form-row" style="margin-bottom:12px">
-            <div class="form-group">
-              <label for="inAmount">Amount ($)</label>
-              <input type="number" id="inAmount" placeholder="0.00" step="0.01" min="0">
-            </div>
-            <div class="form-group">
-              <label for="inCat">Category</label>
-              <select id="inCat" onchange="onCatChange('inCat','customRow')"></select>
-            </div>
-          </div>
-          <div class="custom-cat-row" id="customRow">
-            <input type="text" id="customName" placeholder="New category name">
-            <button class="btn btn-secondary" onclick="addCustomCat('inCat','customRow','customName')">Add</button>
-          </div>
-          <div class="form-row" style="margin-bottom:12px;margin-top:12px">
-            <div class="form-group">
-              <label for="inDate">Date</label>
-              <input type="date" id="inDate">
-            </div>
-            <div class="form-group">
-              <label for="inNote">Note <span style="color:var(--text-subtle)">(optional)</span></label>
-              <input type="text" id="inNote" placeholder="What was this for?">
-            </div>
-          </div>
-          <div style="display:flex;justify-content:flex-end;gap:8px">
-            <button class="btn btn-ghost" onclick="clearAddForm()">Clear</button>
-            <button class="btn btn-primary" onclick="addExpense()">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Add Expense
-            </button>
-          </div>
-        </div>
-      </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-add-btn" onclick="switchTab('add')">Add</button>
+      <button class="tab-btn" id="tab-expenses-btn" onclick="switchTab('expenses')">Expenses</button>
+      <button class="tab-btn" id="tab-summary-btn" onclick="switchTab('summary')">Summary</button>
     </div>
 
-    <!-- Paste & Parse -->
-    <div class="card">
-      <div class="card-header collapsible-header" onclick="toggleSection('parseBody','parseChev')">
-        <span class="card-title">Paste &amp; Parse</span>
-        <svg class="chevron" id="parseChev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="collapsible-body" id="parseBody">
-        <div class="card-body">
-          <div class="form-group">
-            <label for="pasteInput">Paste messy text — one expense</label>
-            <textarea id="pasteInput" placeholder="e.g. starbucks 6.50 tuesday&#10;groceries $84 yesterday&#10;uber 12.40 today"></textarea>
-          </div>
-          <div style="display:flex;justify-content:flex-end;margin-top:10px">
-            <button class="btn btn-secondary" onclick="runParse()">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              Parse
-            </button>
-          </div>
-          <div class="parse-preview" id="parsePreview">
-            <div class="parse-title">Review &amp; confirm</div>
-            <div class="parse-grid">
-              <div class="parse-field form-group">
-                <label>Amount ($)</label>
-                <input type="number" id="pvAmount" step="0.01" min="0">
+    <!-- ADD TAB -->
+    <div class="tab-pane active" id="tab-add">
+
+      <div class="card">
+        <div class="card-header collapsible-header" onclick="toggleSection('addBody','addChev')">
+          <span class="card-title">Add Expense</span>
+          <svg class="chevron up" id="addChev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="collapsible-body open" id="addBody">
+          <div class="card-body">
+            <div class="form-row" style="margin-bottom:12px">
+              <div class="form-group">
+                <label for="inAmount">Amount ($)</label>
+                <input type="number" id="inAmount" placeholder="0.00" step="0.01">
               </div>
-              <div class="parse-field form-group">
-                <label>Category</label>
-                <select id="pvCat"></select>
-              </div>
-              <div class="parse-field form-group">
-                <label>Date</label>
-                <input type="date" id="pvDate">
-              </div>
-              <div class="parse-field form-group">
-                <label>Note</label>
-                <input type="text" id="pvNote" placeholder="Optional">
+              <div class="form-group">
+                <label for="inCat">Category</label>
+                <select id="inCat" onchange="onCatChange('inCat','customRow')"></select>
               </div>
             </div>
-            <div style="display:flex;gap:8px;justify-content:flex-end">
-              <button class="btn btn-ghost btn-sm" onclick="dismissParse()">Dismiss</button>
-              <button class="btn btn-primary btn-sm" onclick="saveParsed()">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                Save Expense
+            <div class="custom-cat-row" id="customRow">
+              <input type="text" id="customName" placeholder="New category name">
+              <button class="btn btn-secondary" onclick="addCustomCat('inCat','customRow','customName')">Add</button>
+            </div>
+            <div class="form-row" style="margin-bottom:12px;margin-top:12px">
+              <div class="form-group">
+                <label for="inDate">Date</label>
+                <input type="date" id="inDate">
+              </div>
+              <div class="form-group">
+                <label for="inNote">Note <span style="color:var(--text-subtle)">(optional)</span></label>
+                <input type="text" id="inNote" placeholder="What was this for?">
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px">
+              <button class="btn btn-ghost" onclick="clearAddForm()">Clear</button>
+              <button class="btn btn-primary" onclick="addExpense()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Expense
               </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Bulk CSV/TSV Import -->
-    <div class="card">
-      <div class="card-header collapsible-header" onclick="toggleSection('csvBody','csvChev')">
-        <span class="card-title">Bulk Import — CSV / TSV</span>
-        <svg class="chevron" id="csvChev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="collapsible-body" id="csvBody">
-        <div class="card-body">
-          <p class="hint">Copy cells from Google Sheets and paste below — tabs and commas both work. Include a header row (e.g. <code>Date</code>, <code>Amount</code>, <code>Category</code>, <code>Note</code>) or skip it and map columns manually.</p>
-          <div class="form-group">
-            <label for="csvInput">Paste data</label>
-            <textarea id="csvInput" style="min-height:96px;font-family:monospace;font-size:12px" placeholder="Date&#9;Amount&#9;Category&#9;Note&#10;2026-04-01&#9;45.00&#9;Grocery&#9;Trader Joe's&#10;2026-04-02&#9;3.75&#9;Coffee&#9;morning latte"></textarea>
-          </div>
-          <div style="display:flex;justify-content:flex-end;margin-top:10px">
-            <button class="btn btn-secondary" onclick="previewCSV()">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              Preview
-            </button>
-          </div>
-          <div id="csvPreviewArea" style="display:none">
-            <div class="csv-preview-wrap">
-              <div class="csv-map-row" id="csvMapRow"></div>
-              <div class="csv-table-wrap">
-                <table class="csv-table" id="csvTable"></table>
+      <div class="card">
+        <div class="card-header collapsible-header" onclick="toggleSection('parseBody','parseChev')">
+          <span class="card-title">Paste &amp; Parse</span>
+          <svg class="chevron" id="parseChev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="collapsible-body" id="parseBody">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="pasteInput">Paste messy text — one expense</label>
+              <textarea id="pasteInput" placeholder="e.g. starbucks 6.50 tuesday&#10;groceries $84 yesterday&#10;uber 12.40 today"></textarea>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:10px">
+              <button class="btn btn-secondary" onclick="runParse()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Parse
+              </button>
+            </div>
+            <div class="parse-preview" id="parsePreview">
+              <div class="parse-title">Review &amp; confirm</div>
+              <div class="parse-grid">
+                <div class="parse-field form-group"><label>Amount ($)</label><input type="number" id="pvAmount" step="0.01"></div>
+                <div class="parse-field form-group"><label>Category</label><select id="pvCat"></select></div>
+                <div class="parse-field form-group"><label>Date</label><input type="date" id="pvDate"></div>
+                <div class="parse-field form-group"><label>Note</label><input type="text" id="pvNote" placeholder="Optional"></div>
               </div>
-              <div class="csv-footer">
-                <span class="csv-count" id="csvCount"></span>
-                <div style="display:flex;gap:8px">
-                  <button class="btn btn-ghost btn-sm" onclick="dismissCSV()">Cancel</button>
-                  <button class="btn btn-primary btn-sm" id="csvImportBtn" onclick="doImportCSV()">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    Import
-                  </button>
+              <div style="display:flex;gap:8px;justify-content:flex-end">
+                <button class="btn btn-ghost btn-sm" onclick="dismissParse()">Dismiss</button>
+                <button class="btn btn-primary btn-sm" onclick="saveParsed()">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  Save Expense
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header collapsible-header" onclick="toggleSection('csvBody','csvChev')">
+          <span class="card-title">Bulk Import — CSV / TSV</span>
+          <svg class="chevron" id="csvChev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="collapsible-body" id="csvBody">
+          <div class="card-body">
+            <p class="hint">Copy cells from Google Sheets and paste below — tabs and commas both work. Include a header row (e.g. <code>Date</code>, <code>Amount</code>, <code>Category</code>, <code>Note</code>) or skip it and map columns manually.</p>
+            <div class="form-group">
+              <label for="csvInput">Paste data</label>
+              <textarea id="csvInput" style="min-height:96px;font-family:monospace;font-size:12px" placeholder="Date&#9;Amount&#9;Category&#9;Note&#10;2026-04-01&#9;45.00&#9;Grocery&#9;Trader Joe's"></textarea>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:10px">
+              <button class="btn btn-secondary" onclick="previewCSV()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Preview
+              </button>
+            </div>
+            <div id="csvPreviewArea" style="display:none">
+              <div class="csv-preview-wrap">
+                <div class="csv-map-row" id="csvMapRow"></div>
+                <div class="csv-table-wrap"><table class="csv-table" id="csvTable"></table></div>
+                <div class="csv-footer">
+                  <span class="csv-count" id="csvCount"></span>
+                  <div style="display:flex;gap:8px">
+                    <button class="btn btn-ghost btn-sm" onclick="dismissCSV()">Cancel</button>
+                    <button class="btn btn-primary btn-sm" id="csvImportBtn" onclick="doImportCSV()">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      Import
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Expense List -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title list-header-row">
-          Expenses
-          <span class="list-count" id="listCount"></span>
-        </span>
+    </div><!-- /tab-add -->
+
+    <!-- EXPENSES TAB -->
+    <div class="tab-pane" id="tab-expenses">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title list-header-row">Expenses <span class="list-count" id="listCount"></span></span>
+        </div>
+        <div class="search-wrap">
+          <input type="text" id="searchIn" placeholder="Search by category, note, or amount…" oninput="renderList()">
+        </div>
+        <div class="filter-row" id="filterRow"></div>
+        <div id="expList"></div>
       </div>
-      <div class="search-wrap">
-        <input type="text" id="searchIn" placeholder="Search by category, note, or amount…" oninput="renderList()">
+    </div><!-- /tab-expenses -->
+
+    <!-- SUMMARY TAB -->
+    <div class="tab-pane" id="tab-summary">
+      <div class="card">
+        <div class="card-body">
+          <div class="sum-controls">
+            <div class="sum-range">
+              <label>From</label>
+              <select id="sumFrom" onchange="renderSummary()"></select>
+              <label>to</label>
+              <select id="sumTo" onchange="renderSummary()"></select>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="exportCSV()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download CSV
+            </button>
+          </div>
+          <div class="sum-table-wrap">
+            <table class="sum-table" id="sumTable"></table>
+          </div>
+        </div>
       </div>
-      <div class="filter-row" id="filterRow"></div>
-      <div id="expList"></div>
-    </div>
+    </div><!-- /tab-summary -->
 
   </main>
 </div>
@@ -402,6 +460,9 @@ const DEFAULT_CATS = [
   {name:'Unknown',       emoji:'❓', color:'#9ca3af', bg:'#f9fafb'},
 ];
 
+// These never count toward "Total Spent"
+const EXCLUDED = new Set(['Income', 'Tax', 'Savings']);
+
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 let S = { expenses: [], customCats: [], viewMonth: '' };
@@ -421,17 +482,15 @@ function saveS() {
 }
 
 function allCats() { return [...DEFAULT_CATS, ...S.customCats]; }
-
-function catInfo(name) {
-  return allCats().find(c=>c.name===name) || DEFAULT_CATS.find(c=>c.name==='Unknown');
-}
+function catInfo(name) { return allCats().find(c=>c.name===name) || DEFAULT_CATS.find(c=>c.name==='Unknown'); }
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 
 function ym(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
 function toDateStr(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function today() { return toDateStr(new Date()); }
-function money(n) { return '$'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function money(n) { return '$'+Math.abs(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function moneyFull(n) { return (n<0?'-':'')+money(n); }
 function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -443,8 +502,7 @@ function dispDate(s) {
   const yd = new Date(td); yd.setDate(td.getDate()-1);
   if (dt.getTime()===td.getTime()) return 'Today';
   if (dt.getTime()===yd.getTime()) return 'Yesterday';
-  const diff = (td-dt)/86400000;
-  if (diff<7) return dt.toLocaleDateString('en-US',{weekday:'long'});
+  if ((td-dt)/86400000<7) return dt.toLocaleDateString('en-US',{weekday:'long'});
   return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:dt.getFullYear()!==now.getFullYear()?'numeric':undefined});
 }
 
@@ -462,15 +520,47 @@ function weekRange() {
 
 function inRange(date,s,e) { return date>=s && date<=e; }
 
+function ymLabel(ymStr) {
+  const [y,m] = ymStr.split('-').map(Number);
+  return new Date(y,m-1,1).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+}
+
+function allDataMonths() {
+  const s = new Set(S.expenses.map(x=>x.date.slice(0,7)));
+  s.add(ym(new Date()));
+  return [...s].sort();
+}
+
+function rangeMonths(from, to) {
+  const months = [];
+  const [fy,fm] = from.split('-').map(Number);
+  const [ty,tm] = to.split('-').map(Number);
+  let y=fy, m=fm;
+  while (y<ty||(y===ty&&m<=tm)) {
+    months.push(`${y}-${String(m).padStart(2,'0')}`);
+    m++; if(m>12){m=1;y++;}
+  }
+  return months;
+}
+
 // ─── TOAST ───────────────────────────────────────────────────────────────────
 
 function toast(msg, type='') {
-  const wrap = document.getElementById('toasts');
   const el = document.createElement('div');
   el.className = 'toast'+(type?' '+type:'');
   el.textContent = msg;
-  wrap.appendChild(el);
+  document.getElementById('toasts').appendChild(el);
   setTimeout(()=>{ el.style.transition='opacity 0.3s'; el.style.opacity='0'; setTimeout(()=>el.remove(),300); }, 2600);
+}
+
+// ─── TABS ────────────────────────────────────────────────────────────────────
+
+function switchTab(name) {
+  ['add','expenses','summary'].forEach(t=>{
+    document.getElementById(`tab-${t}`).classList.toggle('active', t===name);
+    document.getElementById(`tab-${t}-btn`).classList.toggle('active', t===name);
+  });
+  if (name==='summary') renderSummary();
 }
 
 // ─── COLLAPSIBLE ─────────────────────────────────────────────────────────────
@@ -528,7 +618,7 @@ function addExpense() {
   const cat    = document.getElementById('inCat').value;
   const date   = document.getElementById('inDate').value;
   const note   = document.getElementById('inNote').value.trim();
-  if (!amount || isNaN(amount) || amount<=0) { toast('Enter a valid amount','err'); return; }
+  if (isNaN(amount) || amount === 0) { toast('Enter a valid amount','err'); return; }
   if (!date) { toast('Pick a date','err'); return; }
   if (cat==='__new__') { toast('Select or add a category','err'); return; }
   S.expenses.unshift({id:uid(), amount, category:cat, date, note, createdAt:Date.now()});
@@ -542,28 +632,28 @@ function addExpense() {
 // ─── PASTE & PARSE ───────────────────────────────────────────────────────────
 
 const KW = {
-  Bank:          ['bank','atm','wire transfer','direct deposit','zelle','venmo','paypal','cash app'],
-  Bill:          ['bill','utility','electric','water','internet','phone','insurance','comcast','att','verizon','tmobile','t-mobile','pg&e','con ed'],
-  Coffee:        ['coffee','starbucks','dunkin','espresso','latte','cappuccino','cafe','blue bottle','peet'],
-  Donation:      ['donation','donate','charity','nonprofit','gofundme','red cross','fundraiser'],
-  Entertainment: ['movie','cinema','concert','ticket','game','gaming','steam','theater','theatre','show','event','festival','hulu','disney','netflix','spotify'],
-  Exercise:      ['gym','fitness','workout','yoga','pilates','crossfit','peloton','planet fitness','24 hour','equinox'],
-  Food:          ['restaurant','cafe','lunch','dinner','breakfast','pizza','sushi','burrito','taco','chipotle','doordash','uber eats','ubereats','grubhub','takeout','take out','diner','bar','drinks','brunch','mcdonald','burger','wendy','kfc','chick','panda','panera','subway'],
+  Bank:          ['bank','atm','wire transfer','zelle','venmo','paypal','cash app'],
+  Bill:          ['bill','utility','electric','water','internet','phone','insurance','comcast','att','verizon','tmobile','t-mobile'],
+  Coffee:        ['coffee','starbucks','dunkin','espresso','latte','cappuccino','blue bottle','peet'],
+  Donation:      ['donation','donate','charity','nonprofit','gofundme','red cross'],
+  Entertainment: ['movie','cinema','concert','ticket','game','gaming','steam','theater','theatre','show','event','festival'],
+  Exercise:      ['gym','fitness','workout','yoga','pilates','crossfit','peloton','planet fitness','equinox'],
+  Food:          ['restaurant','lunch','dinner','breakfast','pizza','sushi','burrito','taco','chipotle','doordash','uber eats','ubereats','grubhub','takeout','diner','bar','drinks','brunch','mcdonald','burger','wendy','kfc','chick','panda','panera','subway'],
   Fun:           ['bowling','arcade','mini golf','escape room','karaoke','amusement'],
-  Gift:          ['gift','present','birthday','anniversary','amazon gift'],
-  Grocery:       ['grocery','groceries','safeway','whole food','trader joe','kroger','costco','supermarket','market','produce','aldi','publix','wegmans','sprouts','food lion','ralph','vons'],
-  Health:        ['pharmacy','doctor','hospital','medical','dental','vision','prescription','cvs','walgreens','rite aid','urgent care','clinic','therapy','copay','co-pay','optometrist'],
-  Income:        ['income','salary','paycheck','payroll','direct deposit','freelance','consulting fee','commission'],
-  Laundry:       ['laundry','dry clean','laundromat','wash','dryclean'],
+  Gift:          ['gift','present','birthday','anniversary'],
+  Grocery:       ['grocery','groceries','safeway','whole food','trader joe','kroger','costco','supermarket','market','produce','aldi','publix','wegmans','sprouts'],
+  Health:        ['pharmacy','doctor','hospital','medical','dental','vision','prescription','cvs','walgreens','urgent care','clinic','therapy','copay'],
+  Income:        ['income','salary','paycheck','payroll','freelance','consulting','commission','unemployment','severance'],
+  Laundry:       ['laundry','dry clean','laundromat'],
   Personal:      ['haircut','salon','spa','barber','nail','manicure','pedicure','massage'],
   Rent:          ['rent','mortgage','lease'],
-  Savings:       ['savings','save','transfer to savings','401k','ira','investment','brokerage'],
-  Shopping:      ['amazon','clothing','clothes','shoes','shirt','pants','dress','zara','h&m','gap','nordstrom','macy','bestbuy','best buy','mall','target','tj maxx','marshalls'],
-  Subscription:  ['subscription','netflix','spotify','hulu','disney+','apple','amazon prime','youtube premium','notion','dropbox','adobe','microsoft 365'],
-  Tax:           ['tax','irs','turbotax','h&r block','state tax','property tax'],
-  Transportation:['uber','lyft','taxi','bus','train','subway','metro','gas','gasoline','parking','toll','transit','amtrak','bart','mta','zipcar'],
-  Travel:        ['flight','hotel','airbnb','vrbo','vacation','trip','airline','expedia','kayak','booking.com','hilton','marriott','delta','united','american airlines'],
-  Treat:         ['ice cream','dessert','candy','snack','treat','cake','donut','boba','smoothie','milkshake'],
+  Savings:       ['savings','save','401k','ira','investment','brokerage'],
+  Shopping:      ['amazon','clothing','clothes','shoes','shirt','pants','dress','zara','h&m','gap','nordstrom','macy','bestbuy','mall','target','tj maxx','marshalls'],
+  Subscription:  ['subscription','netflix','spotify','hulu','disney+','apple','amazon prime','youtube premium','notion','dropbox','adobe'],
+  Tax:           ['tax','irs','turbotax','h&r block'],
+  Transportation:['uber','lyft','taxi','bus','train','subway','metro','gas','parking','toll','transit','amtrak','bart','zipcar'],
+  Travel:        ['flight','hotel','airbnb','vrbo','vacation','trip','airline','expedia','hilton','marriott','delta','united'],
+  Treat:         ['ice cream','dessert','candy','snack','treat','cake','donut','boba','smoothie'],
 };
 
 function guessCategory(text) {
@@ -593,8 +683,7 @@ function extractDate(text) {
   const short=['sun','mon','tue','wed','thu','fri','sat'];
   for (let i=0;i<7;i++) {
     if (t.includes(days[i]) || new RegExp(`\\b${short[i]}\\b`).test(t)) {
-      const d=new Date(now);
-      let diff=now.getDay()-i; if(diff<=0) diff+=7;
+      const d=new Date(now); let diff=now.getDay()-i; if(diff<=0) diff+=7;
       d.setDate(d.getDate()-diff); return toDateStr(d);
     }
   }
@@ -637,7 +726,7 @@ function saveParsed() {
   const cat    = document.getElementById('pvCat').value;
   const date   = document.getElementById('pvDate').value;
   const note   = document.getElementById('pvNote').value.trim();
-  if (!amount||isNaN(amount)||amount<=0) { toast('Enter a valid amount','err'); return; }
+  if (isNaN(amount)||amount===0) { toast('Enter a valid amount','err'); return; }
   S.expenses.unshift({id:uid(), amount, category:cat, date, note, createdAt:Date.now()});
   saveS();
   if (date.slice(0,7) > S.viewMonth) S.viewMonth = date.slice(0,7);
@@ -646,226 +735,13 @@ function saveParsed() {
   toast('Expense saved','ok');
 }
 
-// ─── CSV / TSV BULK IMPORT ───────────────────────────────────────────────────
-
-let csvState = { rows: [], hasHeader: false, mapping: [] };
-
-const FIELD_OPTS = [
-  {val:'ignore',   label:'— ignore —'},
-  {val:'date',     label:'Date'},
-  {val:'amount',   label:'Amount'},
-  {val:'category', label:'Category'},
-  {val:'note',     label:'Note'},
-];
-
-function parseRawCSV(text) {
-  // Detect delimiter: if any line has a tab, use TSV; else CSV
-  const hasTabs = text.includes('\t');
-  const delim = hasTabs ? '\t' : ',';
-  const lines = text.split(/\r?\n/).filter(l=>l.trim());
-  return lines.map(line => {
-    if (delim === '\t') return line.split('\t').map(c=>c.trim());
-    // Simple CSV parse (handles quoted fields)
-    const cells = []; let cur = ''; let inQ = false;
-    for (let i=0; i<line.length; i++) {
-      const ch = line[i];
-      if (ch==='"' && !inQ) { inQ=true; continue; }
-      if (ch==='"' && inQ) { if(line[i+1]==='"'){cur+='"';i++;}else{inQ=false;} continue; }
-      if (ch===',' && !inQ) { cells.push(cur.trim()); cur=''; continue; }
-      cur += ch;
-    }
-    cells.push(cur.trim());
-    return cells;
-  });
-}
-
-function autoMapHeaders(headers) {
-  const dateKw    = ['date','day','when','time','timestamp'];
-  const amountKw  = ['amount','amt','price','cost','total','sum','value','debit','credit','charge'];
-  const catKw     = ['category','cat','type','kind','label','tag'];
-  const noteKw    = ['note','notes','description','desc','memo','details','merchant','vendor','name','payee','item'];
-  return headers.map(h => {
-    const l = h.toLowerCase().replace(/[^a-z]/g,'');
-    if (dateKw.some(k=>l.includes(k))) return 'date';
-    if (amountKw.some(k=>l.includes(k))) return 'amount';
-    if (catKw.some(k=>l.includes(k))) return 'category';
-    if (noteKw.some(k=>l.includes(k))) return 'note';
-    return 'ignore';
-  });
-}
-
-function looksLikeHeader(row) {
-  // A header row has no numeric-only cells and at least one recognizable keyword
-  const keywords = ['date','amount','category','note','desc','memo','type','total','day','vendor','merchant','name','payee'];
-  const text = row.join(' ').toLowerCase();
-  const hasKeyword = keywords.some(k=>text.includes(k));
-  const hasNumeric = row.some(c=>/^\$?[\d,]+(\.\d+)?$/.test(c.trim()));
-  return hasKeyword && !hasNumeric;
-}
-
-function previewCSV() {
-  const text = document.getElementById('csvInput').value.trim();
-  if (!text) { toast('Paste some data first','err'); return; }
-  const rows = parseRawCSV(text);
-  if (!rows.length) { toast('Could not parse any rows','err'); return; }
-
-  const hasHeader = looksLikeHeader(rows[0]);
-  const headers   = hasHeader ? rows[0] : rows[0].map((_,i)=>`Column ${i+1}`);
-  const dataRows  = hasHeader ? rows.slice(1) : rows;
-  const mapping   = autoMapHeaders(headers);
-
-  csvState = { rows: dataRows, hasHeader, mapping, headers };
-  renderCSVPreview();
-  document.getElementById('csvPreviewArea').style.display = 'block';
-}
-
-function renderCSVPreview() {
-  const {rows, headers, mapping} = csvState;
-  const colCount = headers.length;
-
-  // Column mapping dropdowns
-  const optHTML = FIELD_OPTS.map(o=>`<option value="${o.val}">${o.label}</option>`).join('');
-  document.getElementById('csvMapRow').innerHTML = headers.map((h,i)=>`
-    <div class="csv-map-cell">
-      <label title="${esc(h)}">${esc(h.length>14?h.slice(0,13)+'…':h)}</label>
-      <select onchange="csvState.mapping[${i}]=this.value;renderCSVPreview()" id="cmap-${i}">${optHTML}</select>
-    </div>`).join('');
-  // Restore selections
-  mapping.forEach((v,i)=>{ const s=document.getElementById(`cmap-${i}`); if(s) s.value=v; });
-
-  // Preview table
-  const previewRows = rows.slice(0,8);
-  const valid = countValidCSVRows();
-  document.getElementById('csvCount').innerHTML =
-    `${valid} of ${rows.length} row${rows.length!==1?'s':''} ready to import` +
-    (rows.length-valid>0 ? ` <span class="badge-warn">⚠ ${rows.length-valid} skipped (no amount)</span>` : '');
-  document.getElementById('csvImportBtn').textContent = `Import ${valid}`;
-
-  const thead = `<thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead>`;
-  const tbody = '<tbody>' + previewRows.map(row => {
-    const amtIdx = mapping.indexOf('amount');
-    const hasAmt = amtIdx>=0 && parseCSVAmount(row[amtIdx]??'') !== null;
-    const cls = hasAmt ? '' : ' class="skip"';
-    const cells = row.map((c,ci)=>{
-      const field = mapping[ci];
-      let display = esc(c);
-      if (field==='amount') {
-        const a = parseCSVAmount(c);
-        display = a!==null ? `<strong>${money(a)}</strong>` : `<span style="color:var(--danger)">${esc(c)||'—'}</span>`;
-      } else if (field==='date') {
-        const d = parseCSVDate(c);
-        display = d ? `<strong>${d}</strong>` : `<span style="color:var(--danger)">${esc(c)||'—'}</span>`;
-      } else if (field==='category') {
-        const matched = matchCategory(c);
-        display = `<span title="→ ${esc(matched)}">${esc(c)}</span>`;
-      }
-      return `<td>${display}</td>`;
-    }).join('');
-    return `<tr${cls}>${cells}</tr>`;
-  }).join('') + '</tbody>';
-  document.getElementById('csvTable').innerHTML = thead + tbody;
-}
-
-function countValidCSVRows() {
-  const amtIdx = csvState.mapping.indexOf('amount');
-  if (amtIdx < 0) return 0;
-  return csvState.rows.filter(r => parseCSVAmount(r[amtIdx]??'') !== null).length;
-}
-
-function parseCSVAmount(s) {
-  if (!s && s!==0) return null;
-  const clean = String(s).replace(/[$,\s]/g,'');
-  // Handle parentheses for negative numbers: (45.00) → -45
-  const neg = /^\((.+)\)$/.exec(clean);
-  const val = parseFloat(neg ? '-'+neg[1] : clean);
-  return isNaN(val) ? null : val;
-}
-
-function parseCSVDate(s) {
-  if (!s) return null;
-  s = s.trim();
-  // YYYY-MM-DD
-  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(s)) {
-    const d = new Date(s+'T00:00:00');
-    return isNaN(d)?null:toDateStr(d);
-  }
-  // MM/DD/YYYY or M/D/YY
-  let m = s.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/);
-  if (m) {
-    let y = m[3]?parseInt(m[3]):new Date().getFullYear(); if(y<100) y+=2000;
-    const d = new Date(y,parseInt(m[1])-1,parseInt(m[2]));
-    return isNaN(d)?null:toDateStr(d);
-  }
-  // MM-DD-YYYY
-  m = s.match(/^(\d{1,2})-(\d{1,2})-(\d{2,4})$/);
-  if (m) {
-    let y=parseInt(m[3]); if(y<100) y+=2000;
-    const d = new Date(y,parseInt(m[1])-1,parseInt(m[2]));
-    return isNaN(d)?null:toDateStr(d);
-  }
-  // "April 1, 2026" / "Apr 1 2026"
-  const d = new Date(s);
-  if (!isNaN(d)) return toDateStr(d);
-  return null;
-}
-
-function matchCategory(s) {
-  if (!s) return 'Unknown';
-  const lower = s.toLowerCase().trim();
-  // Exact match (case-insensitive)
-  const exact = allCats().find(c=>c.name.toLowerCase()===lower);
-  if (exact) return exact.name;
-  // Partial match
-  const partial = allCats().find(c=>lower.includes(c.name.toLowerCase()) || c.name.toLowerCase().includes(lower));
-  if (partial) return partial.name;
-  // Keyword guess
-  return guessCategory(s);
-}
-
-function doImportCSV() {
-  const {rows, mapping} = csvState;
-  const amtIdx  = mapping.indexOf('amount');
-  const dateIdx = mapping.indexOf('date');
-  const catIdx  = mapping.indexOf('category');
-  const noteIdx = mapping.indexOf('note');
-
-  if (amtIdx < 0) { toast('Map an Amount column first','err'); return; }
-
-  const added = [];
-  const ts = Date.now();
-  for (let i=0; i<rows.length; i++) {
-    const row = rows[i];
-    const amount = parseCSVAmount(row[amtIdx]??'');
-    if (amount === null) continue;
-    const date     = dateIdx>=0 ? (parseCSVDate(row[dateIdx]??'')||today()) : today();
-    const category = catIdx>=0  ? matchCategory(row[catIdx]??'') : 'Unknown';
-    const note     = noteIdx>=0 ? (row[noteIdx]||'').trim() : '';
-    added.push({id:uid(), amount, category, date, note, createdAt:ts+i});
-  }
-
-  if (!added.length) { toast('No valid rows to import','err'); return; }
-  S.expenses.push(...added);
-  saveS();
-  dismissCSV();
-  renderAll();
-  toast(`Imported ${added.length} expense${added.length!==1?'s':''}`, 'ok');
-}
-
-function dismissCSV() {
-  document.getElementById('csvPreviewArea').style.display = 'none';
-  document.getElementById('csvInput').value = '';
-  csvState = {rows:[],hasHeader:false,mapping:[]};
-}
-
 // ─── MONTH NAV ───────────────────────────────────────────────────────────────
 
 function shiftMonth(delta) {
   const [y,m] = S.viewMonth.split('-').map(Number);
   const d = new Date(y, m-1+delta, 1);
   S.viewMonth = ym(d);
-  updateNextBtn();
-  renderSidebar();
-  renderList();
+  updateNextBtn(); renderSidebar(); renderList();
 }
 
 function updateNextBtn() {
@@ -881,38 +757,63 @@ function renderSidebar() {
 
   const {s,e} = monthRange(S.viewMonth);
   const mExp = S.expenses.filter(x=>inRange(x.date,s,e));
-  const mTotal = mExp.reduce((a,x)=>a+x.amount,0);
+
+  // Spending = excludes Income, Tax, Savings
+  const spending = mExp.filter(x=>!EXCLUDED.has(x.category));
+  const mTotal = spending.reduce((a,x)=>a+x.amount,0);
   document.getElementById('monthTotal').textContent = money(mTotal);
 
+  // Week total (spending only)
   if (S.viewMonth===ym(new Date())) {
     const {s:ws,e:we} = weekRange();
-    const wTotal = S.expenses.filter(x=>inRange(x.date,ws,we)).reduce((a,x)=>a+x.amount,0);
+    const wTotal = S.expenses.filter(x=>inRange(x.date,ws,we)&&!EXCLUDED.has(x.category)).reduce((a,x)=>a+x.amount,0);
     document.getElementById('weekTotal').textContent = money(wTotal)+' this week';
   } else {
     document.getElementById('weekTotal').textContent = '';
   }
 
+  // Category bar chart (spending only)
   const by = {};
-  for (const x of mExp) by[x.category]=(by[x.category]||0)+x.amount;
+  for (const x of spending) by[x.category]=(by[x.category]||0)+x.amount;
   const sorted = Object.entries(by).sort((a,b)=>b[1]-a[1]);
   const chart = document.getElementById('catChart');
   if (!sorted.length) {
     chart.innerHTML = '<div style="text-align:center;color:var(--text-subtle);font-size:13px;padding:8px 0">No expenses this month</div>';
-    return;
+  } else {
+    const maxAmt = sorted[0][1];
+    chart.innerHTML = sorted.map(([name,amt])=>{
+      const c = catInfo(name);
+      const pct = Math.round(amt/mTotal*100);
+      const bar = Math.round(amt/maxAmt*100);
+      return `<div class="cat-row">
+        <div class="cat-info">
+          <div class="cat-name-group"><div class="cat-dot" style="background:${c.color}"></div><span>${c.emoji} ${esc(name)}</span></div>
+          <div><span class="cat-amount">${money(amt)}</span><span class="cat-pct">${pct}%</span></div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${bar}%;background:${c.color}"></div></div>
+      </div>`;
+    }).join('');
   }
-  const maxAmt = sorted[0][1];
-  chart.innerHTML = sorted.map(([name,amt])=>{
-    const c = catInfo(name);
-    const pct = Math.round(amt/mTotal*100);
-    const bar = Math.round(amt/maxAmt*100);
-    return `<div class="cat-row">
-      <div class="cat-info">
-        <div class="cat-name-group"><div class="cat-dot" style="background:${c.color}"></div><span>${c.emoji} ${esc(name)}</span></div>
-        <div><span class="cat-amount">${money(amt)}</span><span class="cat-pct">${pct}%</span></div>
-      </div>
-      <div class="bar-track"><div class="bar-fill" style="width:${bar}%;background:${c.color}"></div></div>
-    </div>`;
-  }).join('');
+
+  // Aside extras: Income, Savings, Tax
+  const incomeTotal = mExp.filter(x=>x.category==='Income').reduce((a,x)=>a+x.amount,0);
+  const savingsTotal = mExp.filter(x=>x.category==='Savings').reduce((a,x)=>a+x.amount,0);
+  const taxTotal = mExp.filter(x=>x.category==='Tax').reduce((a,x)=>a+x.amount,0);
+  const extras = [];
+  if (incomeTotal !== 0) extras.push({label:'Income', val: -incomeTotal, cls:'income'});
+  if (savingsTotal !== 0) extras.push({label:'Savings', val: savingsTotal, cls:''});
+  if (taxTotal !== 0) extras.push({label:'Tax', val: taxTotal, cls: taxTotal>0?'negative':''});
+
+  const extrasEl = document.getElementById('asideExtras');
+  if (extras.length) {
+    extrasEl.innerHTML = '<div class="divider"></div>'
+      + extras.map(r=>`<div class="aside-stat">
+          <span class="aside-stat-label">${r.label}</span>
+          <span class="aside-stat-val ${r.cls}">${r.val<0?'-':''}${money(r.val)}</span>
+        </div>`).join('');
+  } else {
+    extrasEl.innerHTML = '';
+  }
 }
 
 // ─── CHIPS ───────────────────────────────────────────────────────────────────
@@ -925,7 +826,6 @@ function renderChips() {
   const isMobile = window.innerWidth < 640;
   const truncate = isMobile && !chipsExpanded && chips.length > CHIPS_MOBILE_LIMIT;
   const visible = truncate ? chips.slice(0, CHIPS_MOBILE_LIMIT) : chips;
-  const hidden = chips.length - CHIPS_MOBILE_LIMIT;
 
   let html = `<button class="chip${filterCat==='All'?' active':''}" onclick="setFilter('All',this)">All</button>`
     + visible.map(c=>
@@ -933,11 +833,9 @@ function renderChips() {
       ).join('');
 
   if (isMobile && chips.length > CHIPS_MOBILE_LIMIT) {
-    if (truncate) {
-      html += `<button class="chip chip-more" onclick="chipsExpanded=true;renderChips()">+${hidden} more</button>`;
-    } else {
-      html += `<button class="chip chip-more" onclick="chipsExpanded=false;renderChips()">Show less</button>`;
-    }
+    html += truncate
+      ? `<button class="chip chip-more" onclick="chipsExpanded=true;renderChips()">+${chips.length-CHIPS_MOBILE_LIMIT} more</button>`
+      : `<button class="chip chip-more" onclick="chipsExpanded=false;renderChips()">Show less</button>`;
   }
 
   document.getElementById('filterRow').innerHTML = html;
@@ -982,7 +880,7 @@ function expRow(x) {
       ${x.note?`<div class="exp-note">${esc(x.note)}</div>`:''}
     </div>
     <div class="exp-right">
-      <div class="exp-amount">${money(x.amount)}</div>
+      <div class="exp-amount">${moneyFull(x.amount)}</div>
       <div class="exp-date">${dispDate(x.date)}</div>
     </div>
     <div class="exp-actions">
@@ -1006,7 +904,7 @@ function startEdit(id) {
   el.classList.add('editing');
   el.innerHTML = `
     <div class="edit-grid">
-      <div class="form-group"><label>Amount ($)</label><input type="number" id="ea-${id}" value="${x.amount.toFixed(2)}" step="0.01" min="0"></div>
+      <div class="form-group"><label>Amount ($)</label><input type="number" id="ea-${id}" value="${x.amount}" step="0.01"></div>
       <div class="form-group"><label>Category</label><select id="ec-${id}">${opts}</select></div>
       <div class="form-group"><label>Date</label><input type="date" id="ed-${id}" value="${x.date}"></div>
     </div>
@@ -1023,7 +921,7 @@ function saveEdit(id) {
   const cat    = document.getElementById(`ec-${id}`).value;
   const date   = document.getElementById(`ed-${id}`).value;
   const note   = document.getElementById(`en-${id}`).value.trim();
-  if (!amount||isNaN(amount)||amount<=0) { toast('Enter a valid amount','err'); return; }
+  if (isNaN(amount)||amount===0) { toast('Enter a valid amount','err'); return; }
   const i = S.expenses.findIndex(e=>e.id===id);
   if (i===-1) return;
   S.expenses[i] = {...S.expenses[i], amount, category:cat, date, note};
@@ -1036,43 +934,326 @@ function deleteExp(id) {
   saveS(); renderAll(); toast('Deleted');
 }
 
+// ─── SUMMARY TAB ─────────────────────────────────────────────────────────────
+
+function populateSummaryRanges() {
+  const months = allDataMonths();
+  const opts = months.map(m=>`<option value="${m}">${ymLabel(m)}</option>`).join('');
+  document.getElementById('sumFrom').innerHTML = opts;
+  document.getElementById('sumTo').innerHTML = opts;
+  // Default: last 3 months
+  const to = months[months.length-1];
+  const fromIdx = Math.max(0, months.length-3);
+  const from = months[fromIdx];
+  document.getElementById('sumFrom').value = from;
+  document.getElementById('sumTo').value = to;
+}
+
+function renderSummary() {
+  const from = document.getElementById('sumFrom').value;
+  const to   = document.getElementById('sumTo').value;
+  if (!from || !to || from > to) {
+    document.getElementById('sumTable').innerHTML = '<tr><td class="sum-empty">Select a valid date range.</td></tr>';
+    return;
+  }
+
+  const months = rangeMonths(from, to);
+
+  // Gather per-month data
+  const monthExps = months.map(m => {
+    const {s,e} = monthRange(m);
+    return S.expenses.filter(x=>inRange(x.date,s,e));
+  });
+
+  // Income notes across all months
+  const incomeNoteSet = new Set();
+  monthExps.forEach(exps => exps.filter(x=>x.category==='Income').forEach(x=>{ if(x.note) incomeNoteSet.add(x.note); }));
+  const incomeNotes = [...incomeNoteSet].sort();
+
+  // Build display value for a cell
+  function cell(val, cls='') {
+    if (val === 0) return `<td></td>`;
+    const neg = val < 0;
+    const formatted = (neg?'-':'') + money(val);
+    return `<td class="${cls||( neg?'val-neg':'val-pos')}">${formatted}</td>`;
+  }
+
+  const colCount = months.length + 1;
+  let rows = '';
+
+  // Header
+  rows += `<thead><tr><th></th>${months.map(m=>`<th>${ymLabel(m)}</th>`).join('')}</tr></thead><tbody>`;
+
+  // ── Income section ──
+  const incomeTotals = monthExps.map(exps => exps.filter(x=>x.category==='Income').reduce((a,x)=>a+x.amount,0));
+  const anyIncome = incomeTotals.some(v=>v!==0);
+  if (anyIncome) {
+    rows += `<tr class="row-section"><td>Income</td>${incomeTotals.map(v=>cell(-v,'val-neg')).join('')}</tr>`;
+    for (const note of incomeNotes) {
+      const noteTotals = monthExps.map(exps => exps.filter(x=>x.category==='Income'&&x.note===note).reduce((a,x)=>a+x.amount,0));
+      if (noteTotals.every(v=>v===0)) continue;
+      rows += `<tr class="row-sub"><td>${esc(note)}</td>${noteTotals.map(v=>cell(-v,'val-neg')).join('')}</tr>`;
+    }
+    rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
+  }
+
+  // ── Tax row ──
+  const taxTotals = monthExps.map(exps => exps.filter(x=>x.category==='Tax').reduce((a,x)=>a+x.amount,0));
+  if (taxTotals.some(v=>v!==0)) {
+    rows += `<tr class="row-section"><td>Taxes</td>${taxTotals.map(v=>{ if(v===0) return '<td></td>'; return `<td class="${v>0?'val-tax-pos':'val-neg'}">${v>0?'':'-'}${money(v)}</td>`; }).join('')}</tr>`;
+    rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
+  }
+
+  // ── Savings row ──
+  const savTotals = monthExps.map(exps => exps.filter(x=>x.category==='Savings').reduce((a,x)=>a+x.amount,0));
+  if (savTotals.some(v=>v!==0)) {
+    rows += `<tr class="row-section row-savings"><td>Savings</td>${savTotals.map(v=>cell(v)).join('')}</tr>`;
+    rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
+  }
+
+  // ── Total Spending ──
+  const spendTotals = monthExps.map(exps => exps.filter(x=>!EXCLUDED.has(x.category)).reduce((a,x)=>a+x.amount,0));
+  rows += `<tr class="row-total"><td>Total Spending</td>${spendTotals.map(v=>cell(v)).join('')}</tr>`;
+
+  rows += '</tbody>';
+  document.getElementById('sumTable').innerHTML = rows;
+}
+
+// ─── CSV EXPORT ───────────────────────────────────────────────────────────────
+
+function csvRow(cells) {
+  return cells.map(c => {
+    const s = String(c ?? '');
+    return (s.includes(',') || s.includes('"') || s.includes('\n')) ? `"${s.replace(/"/g,'""')}"` : s;
+  }).join(',');
+}
+
+function exportCSV() {
+  const from = document.getElementById('sumFrom').value || ym(new Date());
+  const to   = document.getElementById('sumTo').value   || ym(new Date());
+  const months = rangeMonths(from, to);
+  const monthExps = months.map(m => { const {s,e}=monthRange(m); return S.expenses.filter(x=>inRange(x.date,s,e)); });
+  const labels = months.map(ymLabel);
+
+  const lines = [];
+
+  // ── Section 1: Monthly Summary ──
+  lines.push(csvRow(['MONTHLY SUMMARY']));
+  lines.push(csvRow(['', ...labels]));
+
+  const incomeTotals = monthExps.map(exps=>exps.filter(x=>x.category==='Income').reduce((a,x)=>a+x.amount,0));
+  lines.push(csvRow(['Income', ...incomeTotals.map(v=>v?(-v).toFixed(2):'')]));
+
+  const noteSet = new Set();
+  monthExps.forEach(exps=>exps.filter(x=>x.category==='Income').forEach(x=>{ if(x.note) noteSet.add(x.note); }));
+  for (const note of [...noteSet].sort()) {
+    const vals = monthExps.map(exps=>exps.filter(x=>x.category==='Income'&&x.note===note).reduce((a,x)=>a+x.amount,0));
+    lines.push(csvRow([`  ${note}`, ...vals.map(v=>v?(-v).toFixed(2):'')]));
+  }
+
+  const taxTotals = monthExps.map(exps=>exps.filter(x=>x.category==='Tax').reduce((a,x)=>a+x.amount,0));
+  lines.push(csvRow(['Taxes', ...taxTotals.map(v=>v?v.toFixed(2):'')]));
+
+  const savTotals = monthExps.map(exps=>exps.filter(x=>x.category==='Savings').reduce((a,x)=>a+x.amount,0));
+  lines.push(csvRow(['Savings', ...savTotals.map(v=>v?v.toFixed(2):'')]));
+
+  const spendTotals = monthExps.map(exps=>exps.filter(x=>!EXCLUDED.has(x.category)).reduce((a,x)=>a+x.amount,0));
+  lines.push(csvRow(['Total Spending', ...spendTotals.map(v=>v.toFixed(2))]));
+
+  lines.push('');
+
+  // ── Section 2: Category Breakdown ──
+  lines.push(csvRow(['CATEGORY BREAKDOWN']));
+  lines.push(csvRow(['Category', ...labels]));
+  const usedCats = new Set(S.expenses.map(x=>x.category));
+  for (const cat of allCats().filter(c=>usedCats.has(c.name)&&!EXCLUDED.has(c.name))) {
+    const vals = monthExps.map(exps=>exps.filter(x=>x.category===cat.name).reduce((a,x)=>a+x.amount,0));
+    if (vals.every(v=>v===0)) continue;
+    lines.push(csvRow([cat.name, ...vals.map(v=>v?v.toFixed(2):'')]));
+  }
+
+  lines.push('');
+
+  // ── Section 3: All Expenses ──
+  lines.push(csvRow(['ALL EXPENSES']));
+  lines.push(csvRow(['Date','Amount','Category','Note']));
+  const allInRange = S.expenses.filter(x=>inRange(x.date, monthRange(from).s, monthRange(to).e));
+  allInRange.sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt);
+  for (const x of allInRange) {
+    lines.push(csvRow([x.date, x.amount.toFixed(2), x.category, x.note||'']));
+  }
+
+  const blob = new Blob([lines.join('\n')], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`budget-${from}-to-${to}.csv`; a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV downloaded','ok');
+}
+
+// ─── CSV/TSV BULK IMPORT ─────────────────────────────────────────────────────
+
+let csvState = {rows:[], hasHeader:false, mapping:[]};
+const FIELD_OPTS = [{val:'ignore',label:'— ignore —'},{val:'date',label:'Date'},{val:'amount',label:'Amount'},{val:'category',label:'Category'},{val:'note',label:'Note'}];
+
+function parseRawCSV(text) {
+  const hasTabs = text.includes('\t');
+  const delim = hasTabs ? '\t' : ',';
+  const lines = text.split(/\r?\n/).filter(l=>l.trim());
+  return lines.map(line => {
+    if (delim==='\t') return line.split('\t').map(c=>c.trim());
+    const cells=[]; let cur='',inQ=false;
+    for (let i=0;i<line.length;i++) {
+      const ch=line[i];
+      if(ch==='"'&&!inQ){inQ=true;continue;}
+      if(ch==='"'&&inQ){if(line[i+1]==='"'){cur+='"';i++;}else{inQ=false;}continue;}
+      if(ch===','&&!inQ){cells.push(cur.trim());cur='';continue;}
+      cur+=ch;
+    }
+    cells.push(cur.trim()); return cells;
+  });
+}
+
+function autoMapHeaders(headers) {
+  const dateKw=['date','day','when','time','timestamp'];
+  const amtKw=['amount','amt','price','cost','total','sum','value','debit','credit','charge'];
+  const catKw=['category','cat','type','kind','label','tag'];
+  const noteKw=['note','notes','description','desc','memo','details','merchant','vendor','name','payee','item'];
+  return headers.map(h=>{
+    const l=h.toLowerCase().replace(/[^a-z]/g,'');
+    if(dateKw.some(k=>l.includes(k))) return 'date';
+    if(amtKw.some(k=>l.includes(k))) return 'amount';
+    if(catKw.some(k=>l.includes(k))) return 'category';
+    if(noteKw.some(k=>l.includes(k))) return 'note';
+    return 'ignore';
+  });
+}
+
+function looksLikeHeader(row) {
+  const kws=['date','amount','category','note','desc','memo','type','total','day','vendor','merchant','name','payee'];
+  const text=row.join(' ').toLowerCase();
+  return kws.some(k=>text.includes(k)) && !row.some(c=>/^\$?[\d,]+(\.\d+)?$/.test(c.trim()));
+}
+
+function previewCSV() {
+  const text=document.getElementById('csvInput').value.trim();
+  if(!text){toast('Paste some data first','err');return;}
+  const rows=parseRawCSV(text);
+  if(!rows.length){toast('Could not parse any rows','err');return;}
+  const hasHeader=looksLikeHeader(rows[0]);
+  const headers=hasHeader?rows[0]:rows[0].map((_,i)=>`Column ${i+1}`);
+  const dataRows=hasHeader?rows.slice(1):rows;
+  csvState={rows:dataRows,hasHeader,mapping:autoMapHeaders(headers),headers};
+  renderCSVPreview();
+  document.getElementById('csvPreviewArea').style.display='block';
+}
+
+function renderCSVPreview() {
+  const {rows,headers,mapping}=csvState;
+  const optHTML=FIELD_OPTS.map(o=>`<option value="${o.val}">${o.label}</option>`).join('');
+  document.getElementById('csvMapRow').innerHTML=headers.map((h,i)=>`
+    <div class="csv-map-cell">
+      <label title="${esc(h)}">${esc(h.length>14?h.slice(0,13)+'…':h)}</label>
+      <select onchange="csvState.mapping[${i}]=this.value;renderCSVPreview()" id="cmap-${i}">${optHTML}</select>
+    </div>`).join('');
+  mapping.forEach((v,i)=>{const s=document.getElementById(`cmap-${i}`);if(s)s.value=v;});
+  const valid=countValidCSVRows();
+  document.getElementById('csvCount').innerHTML=`${valid} of ${rows.length} row${rows.length!==1?'s':''} ready to import`+(rows.length-valid>0?` <span class="badge-warn">⚠ ${rows.length-valid} skipped</span>`:'');
+  document.getElementById('csvImportBtn').textContent=`Import ${valid}`;
+  const thead=`<thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead>`;
+  const tbody='<tbody>'+rows.slice(0,8).map(row=>{
+    const amtIdx=mapping.indexOf('amount');
+    const hasAmt=amtIdx>=0&&parseCSVAmount(row[amtIdx]??'')!==null;
+    const cls=hasAmt?'':' class="skip"';
+    const cells=row.map((c,ci)=>{
+      const field=mapping[ci];let display=esc(c);
+      if(field==='amount'){const a=parseCSVAmount(c);display=a!==null?`<strong>${moneyFull(a)}</strong>`:`<span style="color:var(--danger)">${esc(c)||'—'}</span>`;}
+      else if(field==='date'){const d=parseCSVDate(c);display=d?`<strong>${d}</strong>`:`<span style="color:var(--danger)">${esc(c)||'—'}</span>`;}
+      else if(field==='category'){const m=matchCategory(c);display=`<span title="→ ${esc(m)}">${esc(c)}</span>`;}
+      return `<td>${display}</td>`;
+    }).join('');
+    return `<tr${cls}>${cells}</tr>`;
+  }).join('')+'</tbody>';
+  document.getElementById('csvTable').innerHTML=thead+tbody;
+}
+
+function countValidCSVRows(){const i=csvState.mapping.indexOf('amount');if(i<0)return 0;return csvState.rows.filter(r=>parseCSVAmount(r[i]??'')!==null).length;}
+function parseCSVAmount(s){if(!s&&s!==0)return null;const c=String(s).replace(/[$,\s]/g,'');const neg=/^\((.+)\)$/.exec(c);const v=parseFloat(neg?'-'+neg[1]:c);return isNaN(v)?null:v;}
+function parseCSVDate(s){
+  if(!s)return null; s=s.trim();
+  if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(s)){const d=new Date(s+'T00:00:00');return isNaN(d)?null:toDateStr(d);}
+  let m=s.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/);
+  if(m){let y=m[3]?parseInt(m[3]):new Date().getFullYear();if(y<100)y+=2000;const d=new Date(y,parseInt(m[1])-1,parseInt(m[2]));return isNaN(d)?null:toDateStr(d);}
+  m=s.match(/^(\d{1,2})-(\d{1,2})-(\d{2,4})$/);
+  if(m){let y=parseInt(m[3]);if(y<100)y+=2000;const d=new Date(y,parseInt(m[1])-1,parseInt(m[2]));return isNaN(d)?null:toDateStr(d);}
+  const d=new Date(s);return isNaN(d)?null:toDateStr(d);
+}
+function matchCategory(s){
+  if(!s)return 'Unknown';
+  const lower=s.toLowerCase().trim();
+  const exact=allCats().find(c=>c.name.toLowerCase()===lower);if(exact)return exact.name;
+  const partial=allCats().find(c=>lower.includes(c.name.toLowerCase())||c.name.toLowerCase().includes(lower));if(partial)return partial.name;
+  return guessCategory(s);
+}
+
+function doImportCSV(){
+  const {rows,mapping}=csvState;
+  const amtIdx=mapping.indexOf('amount'),dateIdx=mapping.indexOf('date'),catIdx=mapping.indexOf('category'),noteIdx=mapping.indexOf('note');
+  if(amtIdx<0){toast('Map an Amount column first','err');return;}
+  const added=[];const ts=Date.now();
+  for(let i=0;i<rows.length;i++){
+    const row=rows[i];
+    const amount=parseCSVAmount(row[amtIdx]??'');if(amount===null)continue;
+    const date=dateIdx>=0?(parseCSVDate(row[dateIdx]??'')||today()):today();
+    const category=catIdx>=0?matchCategory(row[catIdx]??''):'Unknown';
+    const note=noteIdx>=0?(row[noteIdx]||'').trim():'';
+    added.push({id:uid(),amount,category,date,note,createdAt:ts+i});
+  }
+  if(!added.length){toast('No valid rows to import','err');return;}
+  S.expenses.push(...added);saveS();dismissCSV();renderAll();
+  toast(`Imported ${added.length} expense${added.length!==1?'s':''}`, 'ok');
+}
+
+function dismissCSV(){
+  document.getElementById('csvPreviewArea').style.display='none';
+  document.getElementById('csvInput').value='';
+  csvState={rows:[],hasHeader:false,mapping:[]};
+}
+
 // ─── JSON EXPORT / IMPORT ────────────────────────────────────────────────────
 
 function exportJSON() {
-  const data = {version:1, exportedAt:new Date().toISOString(), expenses:S.expenses, customCats:S.customCats};
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href=url; a.download=`budget-${today()}.json`; a.click();
-  URL.revokeObjectURL(url);
-  toast('Exported','ok');
+  const data={version:1,exportedAt:new Date().toISOString(),expenses:S.expenses,customCats:S.customCats};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`budget-${today()}.json`;a.click();
+  URL.revokeObjectURL(url);toast('Exported','ok');
 }
 
 function importJSON(ev) {
-  const file = ev.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
+  const file=ev.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
     try {
-      const d = JSON.parse(e.target.result);
-      const incoming = d.expenses||[];
-      const inCats   = d.customCats||[];
-      const existing = new Set(S.expenses.map(x=>x.id));
-      const added = incoming.filter(x=>!existing.has(x.id));
+      const d=JSON.parse(e.target.result);
+      const incoming=d.expenses||[],inCats=d.customCats||[];
+      const existing=new Set(S.expenses.map(x=>x.id));
+      const added=incoming.filter(x=>!existing.has(x.id));
       S.expenses.push(...added);
-      const catNames = new Set(allCats().map(c=>c.name));
-      for (const c of inCats) { if (!catNames.has(c.name)) { S.customCats.push(c); catNames.add(c.name); } }
-      saveS(); renderAll();
+      const catNames=new Set(allCats().map(c=>c.name));
+      for(const c of inCats){if(!catNames.has(c.name)){S.customCats.push(c);catNames.add(c.name);}}
+      saveS();renderAll();populateSummaryRanges();
       toast(`Imported ${added.length} expense${added.length!==1?'s':''}`, 'ok');
-    } catch(err) { toast('Invalid JSON file','err'); }
+    } catch(err){toast('Invalid JSON file','err');}
   };
-  reader.readAsText(file);
-  ev.target.value = '';
+  reader.readAsText(file);ev.target.value='';
 }
 
 // ─── RENDER ALL ──────────────────────────────────────────────────────────────
 
 function renderAll() {
   renderSidebar(); renderChips(); renderList(); updateNextBtn();
+  populateSummaryRanges();
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
@@ -1082,14 +1263,16 @@ function init() {
   document.getElementById('inDate').value = today();
   fillCatSelect('inCat');
   fillCatSelect('pvCat');
+  populateSummaryRanges();
   renderAll();
+
   document.getElementById('inNote').addEventListener('keydown', e=>{ if(e.key==='Enter') addExpense(); });
   document.getElementById('inAmount').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('inNote').focus(); });
 
   let lastMobile = window.innerWidth < 640;
   window.addEventListener('resize', ()=>{
     const nowMobile = window.innerWidth < 640;
-    if (lastMobile !== nowMobile) { chipsExpanded = false; lastMobile = nowMobile; }
+    if (lastMobile !== nowMobile) { chipsExpanded=false; lastMobile=nowMobile; }
     renderChips();
   });
 }
