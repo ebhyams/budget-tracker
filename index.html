@@ -262,13 +262,13 @@
 
   <main class="main">
     <div class="tab-bar">
-      <button class="tab-btn active" id="tab-add-btn" onclick="switchTab('add')">Add</button>
+      <button class="tab-btn" id="tab-add-btn" onclick="switchTab('add')">Add</button>
       <button class="tab-btn" id="tab-expenses-btn" onclick="switchTab('expenses')">Expenses</button>
-      <button class="tab-btn" id="tab-summary-btn" onclick="switchTab('summary')">Summary</button>
+      <button class="tab-btn active" id="tab-summary-btn" onclick="switchTab('summary')">Summary</button>
     </div>
 
     <!-- ADD TAB -->
-    <div class="tab-pane active" id="tab-add">
+    <div class="tab-pane" id="tab-add">
 
       <div class="card">
         <div class="card-header collapsible-header" onclick="toggleSection('addBody','addChev')">
@@ -404,7 +404,7 @@
     </div><!-- /tab-expenses -->
 
     <!-- SUMMARY TAB -->
-    <div class="tab-pane" id="tab-summary">
+    <div class="tab-pane active" id="tab-summary">
       <div class="card">
         <div class="card-body">
           <div class="sum-controls">
@@ -1017,8 +1017,8 @@ function renderSummary() {
   rows += `<tr class="row-section"><td>Total Spending</td>${spendTotals.map(v=>cell(v)).join('')}</tr>`;
   rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
 
-  // ── Difference (Spending + Income): income stored negative, so this = spending − |income| ──
-  rows += `<tr class="row-difference"><td>Difference</td>${incomeTotals.map((inc,i)=>{ const diff=spendTotals[i]+inc; return diff===0?'<td></td>':`<td class="${diff<=0?'val-pos':'val-neg'}">${diff<0?'-':''}${money(Math.abs(diff))}</td>`; }).join('')}</tr>`;
+  // ── Difference (Spending + Savings + Income): income/savings stored negative ──
+  rows += `<tr class="row-difference"><td>Difference</td>${incomeTotals.map((inc,i)=>{ const diff=spendTotals[i]+savTotals[i]+inc; return diff===0?'<td></td>':`<td class="${diff<=0?'val-pos':'val-neg'}">${diff<0?'-':''}${money(Math.abs(diff))}</td>`; }).join('')}</tr>`;
 
   rows += '</tbody>';
   document.getElementById('sumTable').innerHTML = rows;
@@ -1065,7 +1065,7 @@ function exportCSV() {
   const spendTotals = monthExps.map(exps=>exps.filter(x=>!EXCLUDED.has(x.category)).reduce((a,x)=>a+x.amount,0));
   lines.push(csvRow(['Total Spending', ...spendTotals.map(v=>v.toFixed(2))]));
 
-  lines.push(csvRow(['Difference', ...incomeTotals.map((inc,i)=>(spendTotals[i]+inc).toFixed(2))]));
+  lines.push(csvRow(['Difference', ...incomeTotals.map((inc,i)=>(spendTotals[i]+savTotals[i]+inc).toFixed(2))]));
 
   lines.push('');
 
@@ -1272,6 +1272,7 @@ function init() {
   fillCatSelect('pvCat');
   populateSummaryRanges();
   renderAll();
+  renderSummary();
 
   document.getElementById('inNote').addEventListener('keydown', e=>{ if(e.key==='Enter') addExpense(); });
   document.getElementById('inAmount').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('inNote').focus(); });
