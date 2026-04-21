@@ -1017,8 +1017,8 @@ function renderSummary() {
   rows += `<tr class="row-section"><td>Total Spending</td>${spendTotals.map(v=>cell(v)).join('')}</tr>`;
   rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
 
-  // ── Difference (Income − Spending) ──
-  rows += `<tr class="row-difference"><td>Difference</td>${incomeTotals.map((inc,i)=>{ const diff=inc-spendTotals[i]; return diff===0?'<td></td>':`<td class="${diff>=0?'val-pos':'val-neg'}">${diff<0?'-':''}${money(Math.abs(diff))}</td>`; }).join('')}</tr>`;
+  // ── Difference (Spending − Income): positive = deficit, negative = surplus ──
+  rows += `<tr class="row-difference"><td>Difference</td>${incomeTotals.map((inc,i)=>{ const diff=spendTotals[i]-inc; return diff===0?'<td></td>':`<td class="${diff<=0?'val-pos':'val-neg'}">${diff<0?'-':''}${money(Math.abs(diff))}</td>`; }).join('')}</tr>`;
 
   rows += '</tbody>';
   document.getElementById('sumTable').innerHTML = rows;
@@ -1065,7 +1065,7 @@ function exportCSV() {
   const spendTotals = monthExps.map(exps=>exps.filter(x=>!EXCLUDED.has(x.category)).reduce((a,x)=>a+x.amount,0));
   lines.push(csvRow(['Total Spending', ...spendTotals.map(v=>v.toFixed(2))]));
 
-  lines.push(csvRow(['Difference', ...incomeTotals.map((inc,i)=>(inc-spendTotals[i]).toFixed(2))]));
+  lines.push(csvRow(['Difference', ...incomeTotals.map((inc,i)=>(spendTotals[i]-inc).toFixed(2))]));
 
   lines.push('');
 
