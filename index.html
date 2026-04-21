@@ -158,6 +158,7 @@
     .sum-table .row-sub td{font-size:12px;color:var(--text-muted)}
     .sum-table .row-sub td:first-child{padding-left:32px}
     .sum-table .row-total td{font-weight:800;font-size:14px;background:var(--bg);border-top:2px solid var(--border-strong)}
+    .sum-table .row-difference td{font-weight:800;font-size:14px;background:var(--bg);border-top:2px solid var(--border-strong)}
     .sum-table .row-spacer td{padding:4px;border-bottom:none}
     .sum-table .row-savings td{color:var(--text-muted)}
     .val-neg{color:var(--income)}
@@ -988,11 +989,11 @@ function renderSummary() {
   const incomeTotals = monthExps.map(exps => exps.filter(x=>x.category==='Income').reduce((a,x)=>a+x.amount,0));
   const anyIncome = incomeTotals.some(v=>v!==0);
   if (anyIncome) {
-    rows += `<tr class="row-section"><td>Income</td>${incomeTotals.map(v=>cell(-v,'val-neg')).join('')}</tr>`;
+    rows += `<tr class="row-section"><td>Income</td>${incomeTotals.map(v=>cell(v,'val-pos')).join('')}</tr>`;
     for (const note of incomeNotes) {
       const noteTotals = monthExps.map(exps => exps.filter(x=>x.category==='Income'&&x.note===note).reduce((a,x)=>a+x.amount,0));
       if (noteTotals.every(v=>v===0)) continue;
-      rows += `<tr class="row-sub"><td>${esc(note)}</td>${noteTotals.map(v=>cell(-v,'val-neg')).join('')}</tr>`;
+      rows += `<tr class="row-sub"><td>${esc(note)}</td>${noteTotals.map(v=>cell(v,'val-pos')).join('')}</tr>`;
     }
     rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
   }
@@ -1000,7 +1001,7 @@ function renderSummary() {
   // ── Tax row ──
   const taxTotals = monthExps.map(exps => exps.filter(x=>x.category==='Tax').reduce((a,x)=>a+x.amount,0));
   if (taxTotals.some(v=>v!==0)) {
-    rows += `<tr class="row-section"><td>Taxes</td>${taxTotals.map(v=>{ if(v===0) return '<td></td>'; return `<td class="${v>0?'val-tax-pos':'val-neg'}">${v>0?'':'-'}${money(v)}</td>`; }).join('')}</tr>`;
+    rows += `<tr class="row-section"><td>Taxes</td>${taxTotals.map(v=>{ if(v===0) return '<td></td>'; return `<td class="${v>0?'val-tax-pos':'val-neg'}">${v>0?'':'-'}${money(Math.abs(v))}</td>`; }).join('')}</tr>`;
     rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
   }
 
@@ -1013,7 +1014,11 @@ function renderSummary() {
 
   // ── Total Spending ──
   const spendTotals = monthExps.map(exps => exps.filter(x=>!EXCLUDED.has(x.category)).reduce((a,x)=>a+x.amount,0));
-  rows += `<tr class="row-total"><td>Total Spending</td>${spendTotals.map(v=>cell(v)).join('')}</tr>`;
+  rows += `<tr class="row-section"><td>Total Spending</td>${spendTotals.map(v=>cell(v)).join('')}</tr>`;
+  rows += `<tr class="row-spacer"><td colspan="${colCount}"></td></tr>`;
+
+  // ── Difference (Income − Spending) ──
+  rows += `<tr class="row-difference"><td>Difference</td>${incomeTotals.map((inc,i)=>{ const diff=inc-spendTotals[i]; return diff===0?'<td></td>':`<td class="${diff>=0?'val-pos':'val-neg'}">${diff<0?'-':''}${money(Math.abs(diff))}</td>`; }).join('')}</tr>`;
 
   rows += '</tbody>';
   document.getElementById('sumTable').innerHTML = rows;
@@ -1042,13 +1047,13 @@ function exportCSV() {
   lines.push(csvRow(['', ...labels]));
 
   const incomeTotals = monthExps.map(exps=>exps.filter(x=>x.category==='Income').reduce((a,x)=>a+x.amount,0));
-  lines.push(csvRow(['Income', ...incomeTotals.map(v=>v?(-v).toFixed(2):'')]));
+  lines.push(csvRow(['Income', ...incomeTotals.map(v=>v?v.toFixed(2):'')]));
 
   const noteSet = new Set();
   monthExps.forEach(exps=>exps.filter(x=>x.category==='Income').forEach(x=>{ if(x.note) noteSet.add(x.note); }));
   for (const note of [...noteSet].sort()) {
     const vals = monthExps.map(exps=>exps.filter(x=>x.category==='Income'&&x.note===note).reduce((a,x)=>a+x.amount,0));
-    lines.push(csvRow([`  ${note}`, ...vals.map(v=>v?(-v).toFixed(2):'')]));
+    lines.push(csvRow([`  ${note}`, ...vals.map(v=>v?v.toFixed(2):'')]));
   }
 
   const taxTotals = monthExps.map(exps=>exps.filter(x=>x.category==='Tax').reduce((a,x)=>a+x.amount,0));
@@ -1059,6 +1064,8 @@ function exportCSV() {
 
   const spendTotals = monthExps.map(exps=>exps.filter(x=>!EXCLUDED.has(x.category)).reduce((a,x)=>a+x.amount,0));
   lines.push(csvRow(['Total Spending', ...spendTotals.map(v=>v.toFixed(2))]));
+
+  lines.push(csvRow(['Difference', ...incomeTotals.map((inc,i)=>(inc-spendTotals[i]).toFixed(2))]));
 
   lines.push('');
 
