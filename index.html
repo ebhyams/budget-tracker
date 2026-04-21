@@ -929,7 +929,7 @@ function renderChips() {
 
   let html = `<button class="chip${filterCat==='All'?' active':''}" onclick="setFilter('All',this)">All</button>`
     + visible.map(c=>
-        `<button class="chip${filterCat===c.name?' active':''}" onclick="setFilter(${JSON.stringify(c.name)},this)">${c.emoji} ${esc(c.name)}</button>`
+        `<button class="chip${filterCat===c.name?' active':''}" onclick="setFilter('${c.name.replace(/'/g,"\\'")}',this)">${c.emoji} ${esc(c.name)}</button>`
       ).join('');
 
   if (isMobile && chips.length > CHIPS_MOBILE_LIMIT) {
